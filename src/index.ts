@@ -1,17 +1,14 @@
 import {  Erc20ContractAddress, Erc20RuleKey, historyApiDefaultRule, userConfigRule } from './config/config';
 import {  loadMergeIn } from './util/assertIn';
-import {  getAvailableApiKey, hashByInfo, hashIdByHistory, queryHistory } from './ethweb/erc20';
+import {  getAvailableApiKey, hashByInfo,  queryHistory } from './ethweb/erc20';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { LOGGER } from './util/log';
-import { sendError, sendSuccess } from './util/helper';
-
 
 const app:express.Application = express();
 let urlencodedParser = bodyParser.urlencoded({ extended: true })
 
 const CURRENTDATA:userConfigRule=loadMergeIn();
-
 
 /**
  * 
