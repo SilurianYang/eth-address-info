@@ -54,7 +54,7 @@ exports.hashByInfo = exports.queryHistory = exports.getAvailableApiKey = exports
 var helper_1 = require("../util/helper");
 var log_1 = require("../util/log");
 var superagent_1 = __importDefault(require("superagent"));
-// require('superagent-proxy')(superagent)
+require('superagent-proxy')(superagent_1.default);
 var hashIdByHistory = function (tronWeb, hashId) {
     var _this = this;
     return new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
@@ -109,11 +109,14 @@ var queryHistory = function (CURRENTDATA, userRule, type) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, superagent_1.default.get(CURRENTDATA.apiPath)
-                            .query(__assign({}, userRule))];
+                            .query(__assign({}, userRule))
+                        //@ts-ignore
+                        // .proxy(`http://127.0.0.1:1080`)
+                    ];
                 case 1:
                     res = _a.sent();
                     results = res.body;
-                    if (results.message !== 'OK') {
+                    if (!/^OK.*/.test(results.message)) {
                         log_1.LOGGER.error(results);
                         return [2 /*return*/, resolve((0, helper_1.sendError)(__assign({}, results)))];
                     }

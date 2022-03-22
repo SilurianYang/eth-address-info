@@ -2,7 +2,7 @@ import { sendError, sendSuccess } from "../util/helper";
 import { LOGGER } from "../util/log";
 import superagent from 'superagent';
 import { historyApiDefaultRule, userConfigRule } from "../config/config";
-// require('superagent-proxy')(superagent)
+require('superagent-proxy')(superagent)
 
 export const hashIdByHistory=function(
     tronWeb:any,
@@ -57,10 +57,12 @@ export const queryHistory=function(
             .query({
                 ...userRule
             })
+            //@ts-ignore
+            // .proxy(`http://127.0.0.1:1080`)
 
             const results=res.body;
 
-            if(results.message!=='OK'){
+            if(!/^OK.*/.test(results.message)){
                 LOGGER.error(results)
                 return resolve(sendError({
                     ...results

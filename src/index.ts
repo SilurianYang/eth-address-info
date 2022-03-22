@@ -22,27 +22,29 @@ const CURRENTDATA:userConfigRule=loadMergeIn();
     type:'in'|'out'|''    可空
  */
 
-app.post('/history',urlencodedParser,async(req,res)=>{
-    const {contractaddress,...info}=req.body;
-    const dafaultData={
-        contractaddress:Erc20ContractAddress[(contractaddress || 'USDT') as Erc20RuleKey],
-        address:'',
-        page:1,
-        offset:10,
-        startblock:0,
-        endblock:27025780,
-        sort:'desc',
-    }
-    const fiexdData={
-        module:'account',
-        action:'tokentx',
-        apikey:getAvailableApiKey(CURRENTDATA)
-    }
-    const userRule={...dafaultData,...info,...fiexdData} as historyApiDefaultRule;
+app.post('/history',urlencodedParser,async (req,res)=>{
 
-    const results=await queryHistory(CURRENTDATA,userRule,info.type);
-
-    res.json(results)
+        const {contractaddress,...info}=req.body;
+        const dafaultData={
+            contractaddress:Erc20ContractAddress[(contractaddress || 'USDT') as Erc20RuleKey],
+            address:'',
+            page:1,
+            offset:10,
+            startblock:0,
+            endblock:27025780,
+            sort:'desc',
+        }
+        const fiexdData={
+            module:'account',
+            action:'tokentx',
+            apikey:getAvailableApiKey(CURRENTDATA)
+        }
+    
+        const userRule={...dafaultData,...info,...fiexdData} as historyApiDefaultRule;
+    
+        const results=await queryHistory(CURRENTDATA,userRule,info.type);
+    
+        res.json(results)
 })
 
 
